@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update destroy change_team_leader]
 
   def index
     @teams = Team.all
@@ -46,6 +46,20 @@ class TeamsController < ApplicationController
   def dashboard
     @team = current_user.keep_team_id ? Team.find(current_user.keep_team_id) : current_user.teams.first
   end
+  
+  # helper_method :change_team_leader
+
+  def change_team_leader
+    if current_user.id == @working_team.owner_id
+      if @working_team.update(owner_id: params[:assign_id])
+        redirect_back(fallback_location: team_path(@working_team))
+      else
+        redirect_to team_path(@working_team.id), notice: I18n.t('views.messages.failed_to_change_leader')
+      end
+    else
+      redirect_to team_path(@working_team.id), notice: I18n.t('views.messages.failed_to_change_leader')
+    end
+  end
 
   private
 
@@ -56,4 +70,5 @@ class TeamsController < ApplicationController
   def team_params
     params.fetch(:team, {}).permit %i[name icon icon_cache owner_id keep_team_id]
   end
+
 end

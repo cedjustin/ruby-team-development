@@ -261,12 +261,14 @@ en:
       edit_profile: 'Edit Profile'
       team_you_belong_to: 'The team you belong to'
       posted_articles: 'List of posted articles'
+      failed_to_change_leader: 'failed to change leader'
     button:
       submit: 'Submit'
       edit: 'Edit'
       delete: 'Delete'
       create: 'Create'
       invite: 'Invite'
+      make_leader: "make leader"
     top:
       line1: 'it is an application to share a specific issue (agenda) easily'
       line2: 'for each member separately for each team or agenda'
