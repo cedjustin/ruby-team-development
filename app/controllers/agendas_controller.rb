@@ -21,6 +21,14 @@ class AgendasController < ApplicationController
     end
   end
 
+  def destroy
+    agenda_to_be_destroyed = @agenda
+    if @agenda.destroy
+      TeamMailer.mail_after_destroy(agenda_to_be_destroyed).deliver
+      redirect_to dashboard_url
+    end
+  end
+
   private
 
   def set_agenda
