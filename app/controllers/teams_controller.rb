@@ -51,7 +51,9 @@ class TeamsController < ApplicationController
 
   def change_team_leader
     if current_user.id == @working_team.owner_id
-      if @working_team.update(owner_id: params[:assign_id])
+      assign = Assign.find(params[:assign])
+      if @working_team.update(owner_id: assign.user.id)
+        TeamOwnerMailer.mail_new_owner(assign.user.email).deliver
         redirect_back(fallback_location: team_path(@working_team))
       else
         redirect_to team_path(@working_team.id), notice: I18n.t('views.messages.failed_to_change_leader')
