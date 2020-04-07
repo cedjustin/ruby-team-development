@@ -22,10 +22,12 @@ class AgendasController < ApplicationController
   end
 
   def destroy
+    @agenda = Agenda.find(params[:id])
     agenda_to_be_destroyed = @agenda
-    if @agenda.destroy
+    if @agenda.present?
+      @agenda.destroy
       TeamMailer.mail_after_destroy(agenda_to_be_destroyed).deliver
-      redirect_to dashboard_url
+      redirect_to dashboard_url, notice: "agenda destroyed"
     end
   end
 
